@@ -27,10 +27,8 @@
   ![](./screenshots/delivery.png)
 - Foods card
   ![](./screenshots/food_details.png)
-- Food Description
-  ![](./screenshots/food_details.png)
 - Book a Table
-  ![](./screenshots/table)
+  ![](./screenshots/table.png)
 - 🛒 Cart Page
   ![](./screenshots/cart.png)
 - ✅ Payment
