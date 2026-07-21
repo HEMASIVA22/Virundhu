@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verifying Session — Virundhu</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body style="background-color: var(--color-paper-white); display: flex; align-items: center; justify-content: center; height: 100vh; font-family: var(--font-primary);">
+
+  <div class="text-center" style="max-width: 400px; padding: 40px 32px; background-color: var(--color-fog); border-radius: var(--radius-pill);">
+    <i class="fa-solid fa-spinner fa-spin" style="font-size: 48px; color: var(--color-ember-orange); margin-bottom: 24px;"></i>
+    <h2 style="font-size: 22px; font-weight: 800; margin-bottom: 12px; color: var(--color-graphite);">Verifying Session</h2>
+    <p style="opacity: 0.75; font-size: 14px; line-height: 1.6;">Please wait while we establish your secure connection to Virundhu.</p>
+  </div>
+
+  <!-- Load Clerk via CDN -->
+  <script src="https://cdn.clerk.com/public/clerk.js" async crossorigin="anonymous"></script>
+  <!-- Load FontAwesome -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js" crossorigin="anonymous"></script>
+
+  <script>
+    window.addEventListener('load', async () => {
+      const Clerk = window.Clerk;
+      if (Clerk) {
+        try {
+          await Clerk.load({
+            publishableKey: 'pk_test_YXBwYXJlbnQtam9leS04NS5jbGVyay5hY2NvdW50cy5kZXYk'
+          });
+          
+          // Complete the SSO redirect authentication flow
+          await Clerk.handleRedirectCallback();
+          
+          // Sync user session to local storage
+          if (Clerk.user) {
+            localStorage.setItem('virundhu_user', Clerk.user.primaryEmailAddress.emailAddress);
+          }
+          
+          // Redirect to index page
+          window.location.href = 'index.html';
+        } catch (err) {
+          console.error('Error handling SSO redirect:', err);
+          window.location.href = 'index.html';
+        }
+      } else {
+        console.error('Clerk SDK was not loaded.');
+        window.location.href = 'index.html';
+      }
+    });
+  </script>
+</body>
+</html>

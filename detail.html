@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Food Detail & Booking — Virundhu</title>
+  <meta name="description" content="View details and book a table." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- Clerk Authentication Browser SDK -->
+  <script async crossorigin="anonymous" data-clerk-publishable-key="pk_test_YXBwYXJlbnQtam9leS04NS5jbGVyay5hY2NvdW50cy5kZXYk" src="https://apparent-joey-85.clerk.accounts.dev/npm/@clerk/clerk-js@4/dist/clerk.browser.js" type="text/javascript"></script>
+</head>
+<body>
+
+  <!-- ================= HEADER / NAVIGATION ================= -->
+  <header class="header" id="top">
+    <div class="container header__container">
+      <a href="index.html" class="logo">
+        <span class="logo__badge"><i class="fa-solid fa-chart-simple"></i></span>
+        <span class="logo__text">Virundhu</span>
+      </a>
+
+      <nav class="nav" id="nav-menu">
+        <ul class="nav__list">
+          <li><a href="explore.html" class="nav__link">Order Online</a></li>
+          <li><a href="index.html#partners" class="nav__link">Add a Restaurant</a></li>
+          <li><a href="index.html#riders" class="nav__link">Become a Rider</a></li>
+        </ul>
+      </nav>
+
+      <div class="header__actions">
+        <button class="btn btn--cart" id="cart-toggle-btn">
+          <i class="fa-solid fa-bag-shopping"></i>
+          <span>Cart</span>
+          <span class="cart-badge" id="cart-count">0</span>
+        </button>
+        <a href="index.html#how-it-works" class="btn btn--header-action" style="padding: 10px 20px; font-size: 14px;">
+          Get App
+        </a>
+        <a href="#" id="login-trigger-btn" class="btn btn--cart" style="padding: 10px 20px; font-size: 14px; border-radius: 12px; font-weight: 700;">
+          Login / Sign Up
+        </a>
+        <button class="nav-toggle" id="nav-toggle">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= DETAIL GRID & BOOKING FORM ================= -->
+  <main class="detail-container container">
+    <div class="detail-grid" id="detail-grid-container">
+      <!-- Left: Food details and macro logs (Foodnoms) -->
+      <div class="detail-left">
+        <div class="detail-img-box" style="margin-bottom: 0;">
+          <img id="detail-img" src="assets/dish-dosa.jpg" alt="Food dish" />
+        </div>
+        
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <span id="detail-hotel" class="food-card__hotel">A2B Restaurant</span>
+            <span id="detail-price" style="font-size: 20px; font-weight: 800; color: var(--color-ember-orange);">₹120</span>
+          </div>
+          <h1 id="detail-title" style="font-size: 32px; margin-bottom: 12px;">Ghee Roast Dosa</h1>
+          <p id="detail-desc" style="opacity: 0.8; font-size: 15px; margin-bottom: 24px; line-height: 1.6;">
+            Delicious crispy, golden crepe roasted in pure aromatic ghee. Perfect breakfast treat!
+          </p>
+
+          <!-- Macro Nutrients rings (Foodnoms style) -->
+          <div class="macro-section" style="margin-top: 24px;">
+            <h3 style="font-size: 16px; margin-bottom: 12px; font-weight: 700;">Nutritional Summary</h3>
+            <div class="macro-grid" style="grid-template-columns: repeat(4, 1fr); gap: 10px;">
+              <!-- Calories Ring -->
+              <div class="macro-ring-container" style="padding: 10px 6px; border-radius: 16px;">
+                <div class="macro-svg-box" style="width: 50px; height: 50px;">
+                  <svg viewBox="0 0 70 70">
+                    <circle cx="35" cy="35" r="28" fill="none" stroke="#f5f5f5" stroke-width="6"></circle>
+                    <circle cx="35" cy="35" r="28" fill="none" stroke="#ff3400" stroke-width="6" stroke-dasharray="176" stroke-dashoffset="44"></circle>
+                  </svg>
+                  <span class="macro-val" style="font-size: 11px;">340</span>
+                </div>
+                <span class="macro-label" style="font-size: 10px; margin-top: 4px;">Calories</span>
+              </div>
+              
+              <!-- Carbs Ring -->
+              <div class="macro-ring-container" style="padding: 10px 6px; border-radius: 16px;">
+                <div class="macro-svg-box" style="width: 50px; height: 50px;">
+                  <svg viewBox="0 0 70 70">
+                    <circle cx="35" cy="35" r="28" fill="none" stroke="#f5f5f5" stroke-width="6"></circle>
+                    <circle cx="35" cy="35" r="28" fill="none" stroke="#00a9dd" stroke-width="6" stroke-dasharray="176" stroke-dashoffset="60"></circle>
+                  </svg>
+                  <span class="macro-val" style="font-size: 11px;">48g</span>
+                </div>
+                <span class="macro-label" style="font-size: 10px; margin-top: 4px;">Carbs</span>
+              </div>
+
+              <!-- Fats Ring -->
+              <div class="macro-ring-container" style="padding: 10px 6px; border-radius: 16px;">
+                <div class="macro-svg-box" style="width: 50px; height: 50px;">
+                  <svg viewBox="0 0 70 70">
+                    <circle cx="35" cy="35" r="28" fill="none" stroke="#f5f5f5" stroke-width="6"></circle>
+                    <circle cx="35" cy="35" r="28" fill="none" stroke="#ff5406" stroke-width="6" stroke-dasharray="176" stroke-dashoffset="120"></circle>
+                  </svg>
+                  <span class="macro-val" style="font-size: 11px;">12g</span>
+                </div>
+                <span class="macro-label" style="font-size: 10px; margin-top: 4px;">Fat</span>
+              </div>
+
+              <!-- Protein Ring -->
+              <div class="macro-ring-container" style="padding: 10px 6px; border-radius: 16px;">
+                <div class="macro-svg-box" style="width: 50px; height: 50px;">
+                  <svg viewBox="0 0 70 70">
+                    <circle cx="35" cy="35" r="28" fill="none" stroke="#f5f5f5" stroke-width="6"></circle>
+                    <circle cx="35" cy="35" r="28" fill="none" stroke="#bd4be5" stroke-width="6" stroke-dasharray="176" stroke-dashoffset="110"></circle>
+                  </svg>
+                  <span class="macro-val" style="font-size: 11px;">8g</span>
+                </div>
+                <span class="macro-label" style="font-size: 10px; margin-top: 4px;">Protein</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Action Buttons Area -->
+          <div style="margin-top: 32px;">
+            <div style="display: flex; gap: 16px; margin-bottom: 12px;">
+              <button class="btn btn--header-action" id="detail-book-btn" style="flex: 1; border-radius: 12px; font-weight: 700; height: 48px; font-size: 14px; text-align: center; display: flex; justify-content: center; align-items: center; box-shadow: none;">
+                Book Table
+              </button>
+              <button class="btn" id="detail-add-cart-btn" style="flex: 1; border-radius: 12px; font-weight: 700; background-color: var(--color-fog); color: var(--color-graphite); height: 48px; border: 1px solid rgba(0,0,0,0.08); font-size: 14px; text-align: center; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: background-color 0.2s ease;">
+                Add to Cart
+              </button>
+            </div>
+            <button class="btn btn--header-action btn--block" id="detail-checkout-btn" style="border-radius: 12px; font-weight: 700; height: 48px; width: 100%; display: flex; justify-content: center; align-items: center; font-size: 14px; box-shadow: none;">
+              Proceed to Payment
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <!-- ================= FOOTER ================= -->
+  <footer class="footer" style="background-color: var(--color-paper-white); border-top: 1px solid var(--color-fog);">
+    <div class="container" style="padding-top: 48px;">
+      <!-- Corporate Address Header -->
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; margin-bottom: 48px; text-align: center;">
+        <div style="display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 700; color: var(--color-graphite); opacity: 0.8;">
+          <i class="fa-solid fa-location-dot" style="color: var(--color-ember-orange); font-size: 20px;"></i>
+          <span>Corporate Address</span>
+        </div>
+      </div>
+
+      <div class="footer__container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 32px; border-bottom: none; padding-bottom: 32px;">
+        <!-- Column 1: About Us & Language -->
+        <div class="footer__col">
+          <h4 style="font-size: 15px; color: var(--color-graphite); margin-bottom: 16px; font-weight: 700;">About Us</h4>
+          <ul style="display: flex; flex-direction: column; gap: 12px; list-style: none;">
+            <li><a href="#" style="font-size: 14px; opacity: 0.75;">About Virundhu</a></li>
+            <li><a href="#" style="font-size: 14px; opacity: 0.75;">Blog</a></li>
+          </ul>
+          <div style="margin-top: 24px;">
+            <h4 style="font-size: 15px; color: var(--color-graphite); margin-bottom: 12px; font-weight: 700;">Language</h4>
+            <div style="position: relative; display: inline-block;">
+              <select style="padding: 8px 32px 8px 16px; border: 1px solid var(--color-fog); border-radius: 8px; font-size: 13px; background-color: var(--color-fog); color: var(--color-graphite); cursor: pointer; appearance: none;">
+                <option>🌐 English</option>
+                <option>Tamil</option>
+                <option>Kannada</option>
+                <option>Hindi</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Column 2: Partner with Us -->
+        <div class="footer__col">
+          <h4 style="font-size: 15px; color: var(--color-graphite); margin-bottom: 16px; font-weight: 700;">Partner with Us</h4>
+          <ul style="display: flex; flex-direction: column; gap: 12px; list-style: none;">
+            <li><a href="index.html#partners" style="font-size: 14px; opacity: 0.75;">Register as a Restaurant</a></li>
+            <li><a href="index.html#riders" style="font-size: 14px; opacity: 0.75;">Become a Virundhu Rider</a></li>
+            <li><a href="explore.html" style="font-size: 14px; opacity: 0.75;">Order online</a></li>
+          </ul>
+        </div>
+
+        <!-- Column 3: Mumbai Address -->
+        <div class="footer__col">
+          <h4 style="font-size: 15px; color: var(--color-graphite); margin-bottom: 16px; font-weight: 700;">Mumbai</h4>
+          <p style="font-size: 13px; opacity: 0.75; line-height: 1.6;">
+            Mittal Court, Office no. 132, 13th Floor, (C Wing) at 224, Nariman Point, Maharashtra, Mumbai - 400021
+          </p>
+        </div>
+
+        <!-- Column 4: Bangalore Address & Help -->
+        <div class="footer__col">
+          <h4 style="font-size: 15px; color: var(--color-graphite); margin-bottom: 16px; font-weight: 700;">Bangalore</h4>
+          <p style="font-size: 13px; opacity: 0.75; line-height: 1.6; margin-bottom: 24px;">
+            Down-Town Park II, Plot 22, Adjacent Prestige Tech Cloud, Bengaluru
+          </p>
+          <div style="display: flex; align-items: center; gap: 10px; margin-top: 16px;">
+            <i class="fa-solid fa-phone" style="color: var(--color-ember-orange); font-size: 20px;"></i>
+            <div>
+              <strong style="display: block; font-size: 12px; opacity: 0.85;">For help & support</strong>
+              <a href="tel:080-69188101" style="font-size: 13px; font-weight: 700;">080-69188101</a>
+              <a href="mailto:customer@virundhu.com" style="display: block; font-size: 12px; opacity: 0.75;">customer@virundhu.com</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Column 5: Kolkata Address -->
+        <div class="footer__col">
+          <h4 style="font-size: 15px; color: var(--color-graphite); margin-bottom: 16px; font-weight: 700;">Kolkata</h4>
+          <p style="font-size: 13px; opacity: 0.75; line-height: 1.6;">
+            Gintaa Tower, Mohisgote, New Town Opposite DLF 1, Gate No.5, West Bengal-700102, India
+          </p>
+        </div>
+
+        <!-- Column 6: Connect with Us -->
+        <div class="footer__col">
+          <h4 style="font-size: 15px; color: var(--color-graphite); margin-bottom: 16px; font-weight: 700;">Connect with Us</h4>
+          <div style="display: flex; gap: 8px; margin-bottom: 16px;">
+            <a href="#" style="width: 32px; height: 32px; background-color: #3b5998; color: white; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 14px;"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="#" style="width: 32px; height: 32px; background-color: #000000; color: white; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 14px;"><i class="fa-brands fa-x-twitter"></i></a>
+            <a href="#" style="width: 32px; height: 32px; background-color: #0077b5; color: white; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 14px;"><i class="fa-brands fa-linkedin-in"></i></a>
+            <a href="#" style="width: 32px; height: 32px; background-color: #e1306c; color: white; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 14px;"><i class="fa-brands fa-instagram"></i></a>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            <a href="index.html#how-it-works" class="btn" style="background-color: #ffeae1; color: var(--color-ember-orange); font-size: 12px; padding: 6px 12px; font-weight: 700; border-radius: var(--radius-pill); justify-content: center;">Get Virundhu app</a>
+            <a href="index.html#riders" class="btn" style="background-color: #ffeae1; color: var(--color-ember-orange); font-size: 12px; padding: 6px 12px; font-weight: 700; border-radius: var(--radius-pill); justify-content: center;">Get Rider app</a>
+            <a href="index.html#partners" class="btn" style="background-color: #ffeae1; color: var(--color-ember-orange); font-size: 12px; padding: 6px 12px; font-weight: 700; border-radius: var(--radius-pill); justify-content: center;">Get Restaurant app</a>
+          </div>
+        </div>
+      </div>
+
+      <div style="border-top: 1px solid var(--color-fog); padding-top: 24px; padding-bottom: 24px; font-size: 12px; opacity: 0.6; display: flex; justify-content: center; align-items: center;">
+        <p>© 2026 Virundhu. All rights reserved. Powered by Asconsoftech</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ================= CART DRAWER ================= -->
+  <div class="cart-drawer" id="cart-drawer">
+    <div class="cart-drawer__header">
+      <h3><i class="fa-solid fa-bag-shopping"></i> Your Food Basket</h3>
+      <button class="close-btn" id="close-cart-btn">&times;</button>
+    </div>
+    <div class="cart-drawer__body" id="cart-items-container">
+      <div class="empty-cart-msg">
+        <i class="fa-solid fa-utensils"></i>
+        <p>Your basket is empty!</p>
+      </div>
+    </div>
+    <div class="cart-drawer__footer">
+      <div class="cart-summary-line">
+        <span>Subtotal</span>
+        <span id="cart-subtotal">₹0</span>
+      </div>
+      <div class="cart-summary-line">
+        <span>Delivery Fee</span>
+        <span id="cart-delivery">₹35</span>
+      </div>
+      <div class="cart-summary-line total-line">
+        <span>Total Payable</span>
+        <span id="cart-total">₹35</span>
+      </div>
+      <button class="btn btn--header-action btn--block" id="checkout-btn">Proceed to Checkout</button>
+    </div>
+  </div>
+  <div class="cart-overlay" id="cart-overlay"></div>
+
+  <!-- Table Booking Form Modal -->
+  <div class="modal" id="table-booking-modal">
+    <div class="modal__content modal__content--small" style="padding: 40px 32px; max-width: 440px;">
+      <button class="close-btn" id="close-booking-form-btn" style="position: absolute; right: 20px; top: 15px; font-size: 24px; background: none; border: none; cursor: pointer;">&times;</button>
+      <h2 class="form-modal-title" style="text-align: center;">Book a Table</h2>
+      <p style="opacity: 0.75; font-size: 14px; margin-bottom: 24px; text-align: center;">Enjoy a premium dining experience. Secure your table reservation for free.</p>
+      
+      <form class="booking-form" id="booking-form" onsubmit="handleTableBooking(event)" style="margin-top: 0;">
+        <div style="margin-bottom: 12px;">
+          <label style="font-size: 13px; font-weight: 600; display: block; margin-bottom: 6px;">Your Full Name</label>
+          <input type="text" id="book-name" required placeholder="Enter name" style="width: 100%; padding: 12px 16px; border-radius: var(--radius-pill); border: 1px solid rgba(0,0,0,0.05); background-color: var(--color-fog);" />
+        </div>
+        <div style="margin-bottom: 12px;">
+          <label style="font-size: 13px; font-weight: 600; display: block; margin-bottom: 6px;">Phone Number</label>
+          <input type="tel" id="book-phone" required placeholder="+91 98765 43210" style="width: 100%; padding: 12px 16px; border-radius: var(--radius-pill); border: 1px solid rgba(0,0,0,0.05); background-color: var(--color-fog);" />
+        </div>
+        <div style="margin-bottom: 12px;">
+          <label style="font-size: 13px; font-weight: 600; display: block; margin-bottom: 6px;">Restaurant</label>
+          <input type="text" id="book-hotel" readonly value="A2B Restaurant" style="width: 100%; padding: 12px 16px; border-radius: var(--radius-pill); border: 1px solid rgba(0,0,0,0.05); background-color: var(--color-fog); opacity: 0.8;" />
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+          <div>
+            <label style="font-size: 13px; font-weight: 600; display: block; margin-bottom: 6px;">Date</label>
+            <input type="date" id="book-date" required style="width: 100%; padding: 12px 16px; border-radius: var(--radius-pill); border: 1px solid rgba(0,0,0,0.05); background-color: var(--color-fog);" />
+          </div>
+          <div>
+            <label style="font-size: 13px; font-weight: 600; display: block; margin-bottom: 6px;">Time</label>
+            <input type="time" id="book-time" required style="width: 100%; padding: 12px 16px; border-radius: var(--radius-pill); border: 1px solid rgba(0,0,0,0.05); background-color: var(--color-fog);" />
+          </div>
+        </div>
+        <div style="margin-bottom: 20px;">
+          <label style="font-size: 13px; font-weight: 600; display: block; margin-bottom: 6px;">Number of Guests</label>
+          <select id="book-guests" required style="width: 100%; padding: 12px 16px; border-radius: var(--radius-pill); border: 1px solid rgba(0,0,0,0.05); background-color: var(--color-fog);">
+            <option value="2">2 People</option>
+            <option value="4">4 People</option>
+            <option value="6">6 People</option>
+            <option value="8">8+ People</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn--header-action btn--block" style="border-radius: 12px; font-weight: 700;">
+          Confirm Reservation
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Booking Confirmation Modal -->
+  <div class="modal" id="booking-success-modal">
+    <div class="modal__content modal__content--small text-center" style="padding: 40px 32px;">
+      <i class="fa-solid fa-circle-check" style="font-size: 56px; color: var(--color-ember-orange); margin-bottom: 20px;"></i>
+      <h2 style="font-size: 24px; margin-bottom: 12px;">Booking Confirmed!</h2>
+      <p style="opacity: 0.8; font-size: 15px; margin-bottom: 24px;" id="booking-success-message">
+        Your table reservation is confirmed. See you there!
+      </p>
+      <button class="btn btn--header-action btn--block" onclick="closeBookingModal()">Done</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>

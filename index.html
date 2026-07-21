@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Virundhu — One Click, Endless Flavors</title>
+  <meta name="description" content="Discover top restaurants and get crispy dosas, spicy biryanis, cheesy pizzas, and desserts delivered fast with Virundhu." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- Clerk Authentication Browser SDK -->
+  <script async crossorigin="anonymous" data-clerk-publishable-key="pk_test_YXBwYXJlbnQtam9leS04NS5jbGVyay5hY2NvdW50cy5kZXYk" src="https://apparent-joey-85.clerk.accounts.dev/npm/@clerk/clerk-js@4/dist/clerk.browser.js" type="text/javascript"></script>
+</head>
+<body>
+
+  <!-- ================= HEADER / NAVIGATION (Gintaa Nav Items) ================= -->
+  <header class="header transparent-nav" id="top">
+    <div class="container header__container">
+      <a href="index.html" class="logo">
+        <span class="logo__badge"><i class="fa-solid fa-chart-simple"></i></span>
+        <span class="logo__text">Virundhu</span>
+      </a>
+
+      <nav class="nav" id="nav-menu">
+        <ul class="nav__list">
+          <li><a href="explore.html" class="nav__link">Order Online</a></li>
+          <li><a href="#partners" class="nav__link">Add a Restaurant</a></li>
+          <li><a href="#riders" class="nav__link">Become a Rider</a></li>
+        </ul>
+      </nav>
+
+      <div class="header__actions">
+        <button class="btn btn--cart" id="cart-toggle-btn">
+          <i class="fa-solid fa-bag-shopping"></i>
+          <span>Cart</span>
+          <span class="cart-badge" id="cart-count">0</span>
+        </button>
+        <a href="#how-it-works" class="btn btn--header-action" style="padding: 10px 20px; font-size: 14px;">
+          Get App
+        </a>
+        <a href="#" id="login-trigger-btn" class="btn btn--cart" style="padding: 10px 20px; font-size: 14px; border-radius: 12px; font-weight: 700;">
+          Login / Sign Up
+        </a>
+        <button class="nav-toggle" id="nav-toggle">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= GINTAA-STYLE FULL BLEED HERO SECTION ================= -->
+  <section class="hero-full-bleed">
+    <video src="assets/hero.mp4" autoplay loop muted playsinline class="hero-video-bg"></video>
+    <div class="hero-overlay"></div>
+    
+    <!-- Centered Content matching Gintaa Layout -->
+    <div class="hero-center-content">
+      <h1 class="hero-gintaa-title">Fresh food is just<br>a delivery away!</h1>
+      <button class="btn btn--download-app" onclick="window.location.hash='#how-it-works'">Download the App</button>
+      
+      <!-- Mouse Scroll Indicator -->
+      <div class="scroll-down-indicator">
+        <span class="scroll-text">SCROLL DOWN</span>
+        <div class="mouse-icon">
+          <span class="mouse-wheel"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= MAIN CONTENT WRAPPER (Scrolls over Hero Video) ================= -->
+  <div class="main-content">
+
+    <!-- ================= HORIZONTAL SCROLLING MARQUEE (Image 5) ================= -->
+    <section class="marquee-section">
+      <div class="container">
+        <div class="marquee-header">
+          <div>
+            <span class="section__subtitle">Trending Cravings</span>
+            <h2 class="section__title">What's on your mind?</h2>
+          </div>
+          <a href="explore.html" class="btn btn--header-action">Explore Food</a>
+        </div>
+      </div>
+
+      <!-- Infinite Auto-Scrolling Marquee Track (Mouse hover pauses it) -->
+      <div class="marquee-container" id="marquee-container">
+        <div class="marquee-track" id="marquee-track-1">
+          <!-- 25 distinct food items duplicated for infinite scroll seamlessness -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= HOW IT WORKS (Gintaa-inspired Interactive Mobile Mockups) ================= -->
+    <section class="how-it-works section" id="how-it-works">
+      <div class="container">
+        <div class="section__header">
+          <div>
+            <span class="section__subtitle">Together at the table</span>
+            <h2 class="section__title"><span class="accent-orange">Three Steps</span> to Your Feast</h2>
+            <p class="section__desc">Pillow-smooth app flow from cravings search to live tracking</p>
+          </div>
+        </div>
+
+        <div class="steps__grid">
+          <!-- Step 1 Mobile Mockup -->
+          <div class="step-phone-card">
+            <div class="phone-frame">
+              <div class="phone-notch"></div>
+              <div class="phone-status-bar">
+                <span class="phone-time">9:41</span>
+                <div class="phone-icons">
+                  <i class="fa-solid fa-signal"></i>
+                  <i class="fa-solid fa-wifi"></i>
+                  <i class="fa-solid fa-battery-full"></i>
+                </div>
+              </div>
+              <div class="phone-screen-content screen-explore">
+                <div class="phone-loc-bar">
+                  <i class="fa-solid fa-location-dot"></i>
+                  <span>Office · Virundhu Tower Street</span>
+                </div>
+                <div class="phone-search-mock">
+                  <i class="fa-solid fa-magnifying-glass"></i>
+                  <span>Search for "Biryani"</span>
+                </div>
+                <div class="phone-promo-card">
+                  <h4>Licious Cravings</h4>
+                  <span>GET UP TO 75% OFF</span>
+                  <small>FREE DELIVERY</small>
+                </div>
+                <div style="font-weight: 700; padding: 0 12px; margin-bottom: 8px;">Choose Your Cravings</div>
+                <div class="phone-categories-grid">
+                  <div class="phone-cat-item">
+                    <div class="phone-cat-circle"><img src="assets/dish-biryani.jpg" /></div>
+                    <span>Biryani</span>
+                  </div>
+                  <div class="phone-cat-item">
+                    <div class="phone-cat-circle"><img src="assets/dish-dosa.jpg" /></div>
+                    <span>South Ind</span>
+                  </div>
+                  <div class="phone-cat-item">
+                    <div class="phone-cat-circle"><img src="assets/dish-pizza.jpg" /></div>
+                    <span>Pizza</span>
+                  </div>
+                  <div class="phone-cat-item">
+                    <div class="phone-cat-circle"><img src="assets/dish-dessert.jpg" /></div>
+                    <span>Starters</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="step-card-text">
+              <h3>01. Explore Dishes</h3>
+              <p>Browse local cuisines, popular chains, and discount menus in one tap.</p>
+            </div>
+          </div>
+
+          <!-- Step 2 Mobile Mockup -->
+          <div class="step-phone-card">
+            <div class="phone-frame">
+              <div class="phone-notch"></div>
+              <div class="phone-status-bar">
+                <span class="phone-time">9:41</span>
+                <div class="phone-icons">
+                  <i class="fa-solid fa-signal"></i>
+                  <i class="fa-solid fa-wifi"></i>
+                  <i class="fa-solid fa-battery-full"></i>
+                </div>
+              </div>
+              <div class="phone-screen-content screen-order">
+                <div class="phone-restaurant-banner">
+                  <img src="assets/dish-biryani.jpg" />
+                </div>
+                <div class="phone-restaurant-card">
+                  <small style="color: var(--color-ember-orange); font-weight: 700;">Lowest Price Guaranteed</small>
+                  <h4>Biryani Hub</h4>
+                  <div class="phone-restaurant-meta">
+                    <span>★ 4.7 (25+)</span>
+                    <span>2kms · 30 min (Approx)</span>
+                  </div>
+                </div>
+                <div class="phone-search-mock" style="margin-top: 0;">
+                  <i class="fa-solid fa-magnifying-glass"></i>
+                  <span>Search for dishes...</span>
+                </div>
+                <div style="display: flex; gap: 8px; padding: 0 12px; margin-bottom: 8px;">
+                  <span style="background-color: var(--color-ember-orange); color: white; padding: 3px 8px; border-radius: 8px; font-size: 9px; font-weight: 600;">All</span>
+                  <span style="background-color: var(--color-fog); padding: 3px 8px; border-radius: 8px; font-size: 9px; opacity: 0.8;">Veg</span>
+                  <span style="background-color: var(--color-fog); padding: 3px 8px; border-radius: 8px; font-size: 9px; opacity: 0.8;">Non-Veg</span>
+                </div>
+              </div>
+            </div>
+            <div class="step-card-text">
+              <h3>02. Fast Checkout</h3>
+              <p>Add food to your basket and complete order placement securely.</p>
+            </div>
+          </div>
+
+          <!-- Step 3 Mobile Mockup -->
+          <div class="step-phone-card">
+            <div class="phone-frame">
+              <div class="phone-notch"></div>
+              <div class="phone-status-bar">
+                <span class="phone-time">9:41</span>
+                <div class="phone-icons">
+                  <i class="fa-solid fa-signal"></i>
+                  <i class="fa-solid fa-wifi"></i>
+                  <i class="fa-solid fa-battery-full"></i>
+                </div>
+              </div>
+              <div class="phone-screen-content screen-track">
+                <div class="phone-track-header">
+                  <div>Delivery partner reached restaurant for pick up</div>
+                  <strong style="font-size: 13px;">Arriving in 30 minutes</strong>
+                </div>
+                <div class="phone-map-mock">
+                  <div class="map-route">
+                    <div class="map-marker map-marker--start"></div>
+                    <div class="map-marker map-marker--end"></div>
+                  </div>
+                  <span style="position: absolute; bottom: 8px; font-size: 9px; font-weight: 700; opacity: 0.6;">LIVE MAP TRACKING</span>
+                </div>
+                <div class="phone-rider-card">
+                  <div class="rider-avatar">🛵</div>
+                  <div class="rider-info">
+                    <h5>Rahul Chakraborty</h5>
+                    <p>Your delivery partner is on the way</p>
+                  </div>
+                  <i class="fa-solid fa-phone" style="margin-left: auto; color: var(--color-ember-orange); font-size: 14px;"></i>
+                </div>
+              </div>
+            </div>
+            <div class="step-card-text">
+              <h3>03. Live Tracking</h3>
+              <p>Follow your rider live on the interactive map from start to delivery.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= WHY US ================= -->
+    <section class="why-us section" id="why-virundhu">
+      <div class="container">
+        <div class="section__header">
+          <div>
+            <span class="section__subtitle">Why Virundhu</span>
+            <h2 class="section__title"><span class="accent-orange">Designed For</span> Ultimate Convenience</h2>
+          </div>
+        </div>
+
+        <div class="features__grid">
+          <div class="feature-card">
+            <div class="feature-card__icon"><i class="fa-solid fa-rocket"></i></div>
+            <h3>Lightning Fast Delivery</h3>
+            <p>Under 30 minutes hyper-local food dispatch system.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-card__icon"><i class="fa-solid fa-map-location-dot"></i></div>
+            <h3>Real-Time GPS Tracking</h3>
+            <p>Track live delivery status straight to your doorstep.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-card__icon"><i class="fa-solid fa-shield-check"></i></div>
+            <h3>Secure Payments</h3>
+            <p>UPI, Credit Cards, and Net banking with high security.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-card__icon"><i class="fa-solid fa-tags"></i></div>
+            <h3>Best Deals</h3>
+            <p>Exclusive discounts, cashback offers, and promo codes.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-card__icon"><i class="fa-solid fa-bell"></i></div>
+            <h3>Live Updates</h3>
+            <p>Instant push alerts for food prep status and rider transit.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-card__icon"><i class="fa-solid fa-heart"></i></div>
+            <h3>Favorite Orders</h3>
+            <p>Bookmark your top items and reorder with a single tap.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= PARTNER RESTAURANT ONBOARDING (Image 3) ================= -->
+    <section class="partners section" id="partners">
+      <div class="container">
+        <div class="section__header text-center" style="margin-bottom: 56px; justify-content: center; width: 100%;">
+          <h2 class="section__title" style="font-size: 38px;">Your Restaurant's Growth Starts Here</h2>
+        </div>
+        <div class="partners__container">
+          <div class="partners__content">
+            <span class="section__subtitle">Expand Your Reach</span>
+            <h2 class="section__title" style="margin-top: 8px; margin-bottom: 20px;">Onboard Fast, Serve Better</h2>
+            <p class="section__desc" style="max-width: 500px; margin-bottom: 24px;">
+              Our app makes onboarding simple and setup hassle-free, so you focus on what matters — great food and happy customers. Virundhu is also considered the best online food delivery app by many satisfied users.
+            </p>
+            <div class="partner-btn-wrap">
+              <button class="btn btn--header-action" id="open-partner-modal" style="border-radius: 12px; font-weight: 700;">
+                Register as a Restaurant
+              </button>
+            </div>
+          </div>
+          <div class="partners__image-wrapper">
+            <img src="assets/restaurant.jpg" alt="Partner Kitchen Chef Cooking" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= RIDER FLEET ONBOARDING (Image 4) ================= -->
+    <section class="riders section" id="riders">
+      <div class="container riders__container">
+        <div class="riders__image-wrapper">
+          <img src="assets/rider.jpg" alt="Rider Partner Delivery Motorbike" />
+        </div>
+        <div class="riders__content">
+          <span class="partner-badge-red">For Delivery Partner</span>
+          <h2 class="section__title" style="margin-bottom: 20px;">Deliver Fast, Earn Even Faster</h2>
+          
+          <ul class="benefit-list">
+            <li>
+              <div class="red-check-circle">✓</div>
+              <div>
+                <h3>High Earnings, Guaranteed Growth</h3>
+                <p>Earn competitive payouts and attractive incentives.</p>
+              </div>
+            </li>
+            <li>
+              <div class="red-check-circle">✓</div>
+              <div>
+                <h3>Flexible Hours, Zero Pressure</h3>
+                <p>Work whenever you want, wherever you want.</p>
+              </div>
+            </li>
+            <li>
+              <div class="red-check-circle">✓</div>
+              <div>
+                <h3>Deliver with Confidence & Care!</h3>
+                <p>Receive support, safety assistance, and training.</p>
+              </div>
+            </li>
+            <li>
+              <div class="red-check-circle">✓</div>
+              <div>
+                <h3>Daily Payouts</h3>
+                <p>Get your earnings directly and quickly.</p>
+              </div>
+            </li>
+          </ul>
+          
+          <button class="btn btn--header-action" id="open-rider-modal" style="border-radius: 12px; font-weight: 700;">
+            Become a Rider →
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= FAQ SECTION ================= -->
+    <section class="faq section" id="faq">
+      <div class="container">
+        <div class="section__header">
+          <div>
+            <span class="section__subtitle">Frequently Asked</span>
+            <h2 class="section__title"><span class="accent-orange">Questions?</span> We Got You.</h2>
+          </div>
+        </div>
+
+        <div class="faq__wrapper">
+          <div class="faq-item">
+            <div class="faq-question">
+              <span>What is Virundhu and how does it work?</span>
+              <i class="fa-solid fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+              <p>Virundhu is a premium food delivery platform. Browse restaurants, add dishes to your basket, checkout, and track your rider live!</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">
+              <span>How fast is the food delivery?</span>
+              <i class="fa-solid fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+              <p>We target under 30 minutes for delivery, depending on the restaurant distance and traffic conditions.</p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">
+              <span>How do I partner my restaurant with Virundhu?</span>
+              <i class="fa-solid fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+              <p>Simply register via the "Register Restaurant" form. Our onboarding team will get back to you with terms and device setup within 24 hours.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="footer" style="background-color: var(--color-paper-white); border-top: 1px solid var(--color-fog);">
+      <div class="container" style="padding-top: 48px;">
+        <!-- Corporate Address Header -->
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; margin-bottom: 48px; text-align: center;">
+          <div style="display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 700; color: var(--color-graphite); opacity: 0.8;">
+            <i class="fa-solid fa-location-dot" style="color: var(--color-ember-orange); font-size: 20px;"></i>
+            <span>Corporate Address</span>
+          </div>
+        </div>
+
+        <div class="footer__container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 32px; border-bottom: none; padding-bottom: 32px;">
+          <!-- Column 1: About Us & Language -->
+          <div class="footer__col">
+            <h4 style="font-size: 15px; color: var(--color-graphite); margin-bottom: 16px; font-weight: 700;">About Us</h4>
+            <ul style="display: flex; flex-direction: column; gap: 12px; list-style: none;">
+              <li><a href="#" style="font-size: 14px; opacity: 0.75;">About Virundhu</a></li>
+              <li><a href="#" style="font-size: 14px; opacity: 0.75;">Blog</a></li>
+            </ul>
+            <div style="margin-top: 24px;">
+              <h4 style="font-size: 15px; color: var(--color-graphite); margin-bottom: 12px; font-weight: 700;">Language</h4>
+              <div style="position: relative; display: inline-block;">
+                <select style="padding: 8px 32px 8px 16px; border: 1px solid var(--color-fog); border-radius: 8px; font-size: 13px; background-color: var(--color-fog); color: var(--color-graphite); cursor: pointer; appearance: none;">
+                  <option>🌐 English</option>
+                  <option>Tamil</option>
+                  <option>Kannada</option>
+                  <option>Hindi</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Column 2: Partner with Us -->
+          <div class="footer__col">
+            <h4 style="font-size: 15px; color: var(--color-graphite); margin-bottom: 16px; font-weight: 700;">Partner with Us</h4>
+            <ul style="display: flex; flex-direction: column; gap: 12px; list-style: none;">
+              <li><a href="#partners" style="font-size: 14px; opacity: 0.75;">Register as a Restaurant</a></li>
+              <li><a href="#riders" style="font-size: 14px; opacity: 0.75;">Become a Virundhu Rider</a></li>
+              <li><a href="explore.html" style="font-size: 14px; opacity: 0.75;">Order online</a></li>
+            </ul>
+          </div>
+
+          <!-- Column 3: Mumbai Address -->
+          <div class="footer__col">
+            <h4 style="font-size: 15px; color: var(--color-graphite); margin-bottom: 16px; font-weight: 700;">Mumbai</h4>
+            <p style="font-size: 13px; opacity: 0.75; line-height: 1.6;">
+              Mittal Court, Office no. 132, 13th Floor, (C Wing) at 224, Nariman Point, Maharashtra, Mumbai - 400021
+            </p>
+          </div>
+
+          <!-- Column 4: Bangalore Address & Help -->
+          <div class="footer__col">
+            <h4 style="font-size: 15px; color: var(--color-graphite); margin-bottom: 16px; font-weight: 700;">Bangalore</h4>
+            <p style="font-size: 13px; opacity: 0.75; line-height: 1.6; margin-bottom: 24px;">
+              Down-Town Park II, Plot 22, Adjacent Prestige Tech Cloud, Bengaluru
+            </p>
+            <div style="display: flex; align-items: center; gap: 10px; margin-top: 16px;">
+              <i class="fa-solid fa-phone" style="color: var(--color-ember-orange); font-size: 20px;"></i>
+              <div>
+                <strong style="display: block; font-size: 12px; opacity: 0.85;">For help & support</strong>
+                <a href="tel:080-69188101" style="font-size: 13px; font-weight: 700;">080-69188101</a>
+                <a href="mailto:customer@virundhu.com" style="display: block; font-size: 12px; opacity: 0.75;">customer@virundhu.com</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Column 5: Kolkata Address -->
+          <div class="footer__col">
+            <h4 style="font-size: 15px; color: var(--color-graphite); margin-bottom: 16px; font-weight: 700;">Kolkata</h4>
+            <p style="font-size: 13px; opacity: 0.75; line-height: 1.6;">
+              Gintaa Tower, Mohisgote, New Town Opposite DLF 1, Gate No.5, West Bengal-700102, India
+            </p>
+          </div>
+
+          <!-- Column 6: Connect with Us -->
+          <div class="footer__col">
+            <h4 style="font-size: 15px; color: var(--color-graphite); margin-bottom: 16px; font-weight: 700;">Connect with Us</h4>
+            <div style="display: flex; gap: 8px; margin-bottom: 16px;">
+              <a href="#" style="width: 32px; height: 32px; background-color: #3b5998; color: white; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 14px;"><i class="fa-brands fa-facebook-f"></i></a>
+              <a href="#" style="width: 32px; height: 32px; background-color: #000000; color: white; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 14px;"><i class="fa-brands fa-x-twitter"></i></a>
+              <a href="#" style="width: 32px; height: 32px; background-color: #0077b5; color: white; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 14px;"><i class="fa-brands fa-linkedin-in"></i></a>
+              <a href="#" style="width: 32px; height: 32px; background-color: #e1306c; color: white; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 14px;"><i class="fa-brands fa-instagram"></i></a>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 8px;">
+              <a href="#how-it-works" class="btn" style="background-color: #ffeae1; color: var(--color-ember-orange); font-size: 12px; padding: 6px 12px; font-weight: 700; border-radius: var(--radius-pill); justify-content: center;">Get Virundhu app</a>
+              <a href="#riders" class="btn" style="background-color: #ffeae1; color: var(--color-ember-orange); font-size: 12px; padding: 6px 12px; font-weight: 700; border-radius: var(--radius-pill); justify-content: center;">Get Rider app</a>
+              <a href="#partners" class="btn" style="background-color: #ffeae1; color: var(--color-ember-orange); font-size: 12px; padding: 6px 12px; font-weight: 700; border-radius: var(--radius-pill); justify-content: center;">Get Restaurant app</a>
+            </div>
+          </div>
+        </div>
+
+        <div style="border-top: 1px solid var(--color-fog); padding-top: 24px; padding-bottom: 24px; font-size: 12px; opacity: 0.6; display: flex; justify-content: center; align-items: center;">
+          <p>© 2026 Virundhu. All rights reserved. Powered by Asconsoftech</p>
+        </div>
+      </div>
+    </footer>
+
+  </div> <!-- ================= END MAIN CONTENT WRAP - OVERLAP VIDEO ================= -->
+
+  <!-- ================= CART DRAWER ================= -->
+  <div class="cart-drawer" id="cart-drawer">
+    <div class="cart-drawer__header">
+      <h3><i class="fa-solid fa-bag-shopping"></i> Your Food Basket</h3>
+      <button class="close-btn" id="close-cart-btn">&times;</button>
+    </div>
+    <div class="cart-drawer__body" id="cart-items-container">
+      <div class="empty-cart-msg">
+        <i class="fa-solid fa-utensils"></i>
+        <p>Your basket is empty!</p>
+      </div>
+    </div>
+    <div class="cart-drawer__footer">
+      <div class="cart-summary-line">
+        <span>Subtotal</span>
+        <span id="cart-subtotal">₹0</span>
+      </div>
+      <div class="cart-summary-line">
+        <span>Delivery Fee</span>
+        <span id="cart-delivery">₹35</span>
+      </div>
+      <div class="cart-summary-line total-line">
+        <span>Total Payable</span>
+        <span id="cart-total">₹35</span>
+      </div>
+      <button class="btn btn--header-action btn--block" id="checkout-btn">Proceed to Checkout</button>
+    </div>
+  </div>
+  <div class="cart-overlay" id="cart-overlay"></div>
+
+  <!-- ================= RIDER/PARTNER MODAL ================= -->
+  <div class="modal" id="form-modal">
+    <div class="modal__content modal__content--small">
+      <button class="close-btn modal__close" id="close-form-btn">&times;</button>
+      <h3 id="form-title" class="form-modal-title">Join Virundhu</h3>
+      <form id="submission-form" onsubmit="handleFormSubmit(event)">
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" required placeholder="Enter your name" />
+        </div>
+        <div class="form-group">
+          <label>Phone Number</label>
+          <input type="tel" required placeholder="+91 98765 43210" />
+        </div>
+        <div class="form-group">
+          <label>City</label>
+          <input type="text" required placeholder="e.g. Chennai, Bangalore" />
+        </div>
+        <button type="submit" class="btn btn--header-action btn--block">Submit Application</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= SIGN IN / SIGN UP MODAL ================= -->
+  <div class="modal" id="login-modal">
+    <div class="modal__content modal__content--small">
+      <button class="close-btn modal__close" id="close-login-btn">&times;</button>
+      <h3 class="form-modal-title" style="text-align: center; margin-bottom: 8px;">Welcome Back</h3>
+      <p style="font-size: 13px; text-align: center; opacity: 0.75; margin-bottom: 24px;">Login to order delicious food and track live riders.</p>
+      <form id="login-form" onsubmit="handleLoginSubmit(event)">
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="login-email" required placeholder="name@example.com" />
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="login-password" required placeholder="Enter password" />
+        </div>
+        <button type="submit" class="btn btn--header-action btn--block" style="margin-top: 12px; border-radius: 12px; font-weight: 700;">
+          Log In
+        </button>
+      </form>
+      <div style="text-align: center; margin-top: 24px; font-size: 12px; opacity: 0.6;">
+        Secure Clerk integration is coming soon.
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>

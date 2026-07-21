@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Checkout & Payment — Virundhu</title>
+  <meta name="description" content="Securely checkout and pay for your delicious food items." />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- Clerk Authentication Browser SDK -->
+  <script async crossorigin="anonymous" data-clerk-publishable-key="pk_test_YXBwYXJlbnQtam9leS04NS5jbGVyay5hY2NvdW50cy5kZXYk" src="https://apparent-joey-85.clerk.accounts.dev/npm/@clerk/clerk-js@4/dist/clerk.browser.js" type="text/javascript"></script>
+  <style>
+    .checkout-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 48px;
+      margin-top: 40px;
+    }
+    .checkout-card {
+      background-color: var(--color-fog);
+      border-radius: var(--radius-pill);
+      padding: 32px;
+      margin-bottom: 24px;
+      text-align: left;
+    }
+    .checkout-card h3 {
+      font-size: 22px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+    .payment-options {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .payment-option-label {
+      background-color: var(--color-paper-white);
+      border: 1px solid rgba(0,0,0,0.05);
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 15px;
+      transition: border-color 0.2s ease, background-color 0.2s ease;
+    }
+    .payment-option-label input {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--color-ember-orange);
+    }
+    .payment-option-label:hover {
+      background-color: var(--color-fog);
+    }
+    .payment-option-label.selected {
+      border-color: var(--color-ember-orange);
+      background-color: #ffeae1;
+    }
+    .checkout-item-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+      font-size: 14px;
+    }
+    .checkout-item-row strong {
+      font-weight: 700;
+    }
+    @media (max-width: 992px) {
+      .checkout-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ================= HEADER / NAVIGATION ================= -->
+  <header class="header" id="top">
+    <div class="container header__container">
+      <a href="index.html" class="logo">
+        <span class="logo__badge"><i class="fa-solid fa-chart-simple"></i></span>
+        <span class="logo__text">Virundhu</span>
+      </a>
+
+      <nav class="nav" id="nav-menu">
+        <ul class="nav__list">
+          <li><a href="explore.html" class="nav__link">Order Online</a></li>
+          <li><a href="index.html#partners" class="nav__link">Add a Restaurant</a></li>
+          <li><a href="index.html#riders" class="nav__link">Become a Rider</a></li>
+        </ul>
+      </nav>
+
+      <div class="header__actions">
+        <button class="btn btn--cart" id="cart-toggle-btn" style="display: none;">
+          <i class="fa-solid fa-bag-shopping"></i>
+          <span>Cart</span>
+          <span class="cart-badge" id="cart-count">0</span>
+        </button>
+        <a href="index.html#how-it-works" class="btn btn--header-action" style="padding: 10px 20px; font-size: 14px;">
+          Get App
+        </a>
+        <a href="#" id="login-trigger-btn" class="btn btn--cart" style="padding: 10px 20px; font-size: 14px; border-radius: 12px; font-weight: 700;">
+          Login / Sign Up
+        </a>
+        <button class="nav-toggle" id="nav-toggle">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= CHECKOUT CONTENT ================= -->
+  <main class="explore-container container" style="padding-top: 120px; padding-bottom: 96px;">
+    <div class="section__header text-center" style="margin-bottom: 32px;">
+      <span class="section__subtitle">Place Order</span>
+      <h1 class="section__title">Secure Checkout</h1>
+      <p class="section__desc">Verify your items and select a payment option below.</p>
+    </div>
+
+    <div class="checkout-grid">
+      <!-- Left Column: Delivery & Payment Details -->
+      <div class="checkout-left">
+        <!-- Delivery Card -->
+        <div class="checkout-card">
+          <h3><i class="fa-solid fa-map-location-dot" style="color: var(--color-ember-orange);"></i> Delivery Address</h3>
+          <form id="delivery-address-form" style="display: flex; flex-direction: column; gap: 16px;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+              <div>
+                <label style="font-size: 14px; font-weight: 700; display: block; margin-bottom: 8px; opacity: 0.9;">Full Name</label>
+                <input type="text" id="checkout-fullname" required placeholder="Full Name" style="width: 100%; padding: 12px 16px; border-radius: var(--radius-pill); border: 1px solid rgba(0,0,0,0.05); background-color: var(--color-paper-white);" />
+              </div>
+              <div>
+                <label style="font-size: 14px; font-weight: 700; display: block; margin-bottom: 8px; opacity: 0.9;">Phone Number</label>
+                <input type="tel" id="checkout-phone" required placeholder="+91 98765 43210" style="width: 100%; padding: 12px 16px; border-radius: var(--radius-pill); border: 1px solid rgba(0,0,0,0.05); background-color: var(--color-paper-white);" />
+              </div>
+            </div>
+            <div>
+              <label style="font-size: 14px; font-weight: 700; display: block; margin-bottom: 8px; opacity: 0.9;">Address Line</label>
+              <input type="text" id="checkout-address" required placeholder="Flat No., Building, Street Name" style="width: 100%; padding: 12px 16px; border-radius: var(--radius-pill); border: 1px solid rgba(0,0,0,0.05); background-color: var(--color-paper-white);" />
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+              <div>
+                <label style="font-size: 14px; font-weight: 700; display: block; margin-bottom: 8px; opacity: 0.9;">City</label>
+                <input type="text" id="checkout-city" required placeholder="City" style="width: 100%; padding: 12px 16px; border-radius: var(--radius-pill); border: 1px solid rgba(0,0,0,0.05); background-color: var(--color-paper-white);" />
+              </div>
+              <div>
+                <label style="font-size: 14px; font-weight: 700; display: block; margin-bottom: 8px; opacity: 0.9;">Pincode</label>
+                <input type="text" id="checkout-pincode" required placeholder="Pincode" style="width: 100%; padding: 12px 16px; border-radius: var(--radius-pill); border: 1px solid rgba(0,0,0,0.05); background-color: var(--color-paper-white);" />
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <!-- Payment Card -->
+        <div class="checkout-card">
+          <h3><i class="fa-solid fa-credit-card" style="color: var(--color-ember-orange);"></i> Payment Mode</h3>
+          <div class="payment-options">
+            <label class="payment-option-label selected">
+              <input type="radio" name="payment_mode" value="upi" checked onclick="togglePaymentSelect(this)" />
+              <span>UPI (Google Pay, PhonePe, Paytm)</span>
+            </label>
+            <label class="payment-option-label">
+              <input type="radio" name="payment_mode" value="card" onclick="togglePaymentSelect(this)" />
+              <span>Credit / Debit Card</span>
+            </label>
+            <label class="payment-option-label">
+              <input type="radio" name="payment_mode" value="netbanking" onclick="togglePaymentSelect(this)" />
+              <span>Net Banking</span>
+            </label>
+            <label class="payment-option-label">
+              <input type="radio" name="payment_mode" value="cod" onclick="togglePaymentSelect(this)" />
+              <span>Cash on Delivery (COD)</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Order Summary details -->
+      <div class="checkout-right">
+        <div class="checkout-card" style="background-color: var(--color-fog);">
+          <h3><i class="fa-solid fa-bag-shopping" style="color: var(--color-ember-orange);"></i> Order Summary</h3>
+          <div id="checkout-items-list" style="margin-bottom: 20px;">
+            <!-- Cart items filled dynamically -->
+          </div>
+          <div class="cart-summary-line" style="display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 8px;">
+            <span>Subtotal</span>
+            <span id="checkout-subtotal">₹0</span>
+          </div>
+          <div class="cart-summary-line" style="display: flex; justify-content: space-between; font-size: 14px; margin-bottom: 8px;">
+            <span>Delivery Partner Fee</span>
+            <span id="checkout-delivery">₹35</span>
+          </div>
+          <div class="cart-summary-line total-line" style="display: flex; justify-content: space-between; font-size: 18px; font-weight: 700; margin-top: 16px; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 12px;">
+            <span>Amount Payable</span>
+            <span id="checkout-total">₹35</span>
+          </div>
+          <button class="btn btn--header-action btn--block" id="pay-confirm-btn" style="margin-top: 24px; border-radius: 12px; font-weight: 700;" onclick="handlePaymentConfirm()">
+            Confirm Order & Pay
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="footer" style="background-color: var(--color-paper-white); border-top: 1px solid var(--color-fog);">
+    <div class="container" style="padding-top: 48px;">
+      <!-- Corporate Address Header -->
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; margin-bottom: 48px; text-align: center;">
+        <div style="display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 700; color: var(--color-graphite); opacity: 0.8;">
+          <i class="fa-solid fa-location-dot" style="color: var(--color-ember-orange); font-size: 20px;"></i>
+          <span>Corporate Address</span>
+        </div>
+      </div>
+
+      <div class="footer__container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 32px; border-bottom: none; padding-bottom: 32px;">
+        <!-- Column 1: About Us & Language -->
+        <div class="footer__col">
+          <h4 style="font-size: 15px; color: var(--color-graphite); margin-bottom: 16px; font-weight: 700;">About Us</h4>
+          <ul style="display: flex; flex-direction: column; gap: 12px; list-style: none;">
+            <li><a href="#" style="font-size: 14px; opacity: 0.75;">About Virundhu</a></li>
+            <li><a href="#" style="font-size: 14px; opacity: 0.75;">Blog</a></li>
+          </ul>
+          <div style="margin-top: 24px;">
+            <h4 style="font-size: 15px; color: var(--color-graphite); margin-bottom: 12px; font-weight: 700;">Language</h4>
+            <div style="position: relative; display: inline-block;">
+              <select style="padding: 8px 32px 8px 16px; border: 1px solid var(--color-fog); border-radius: 8px; font-size: 13px; background-color: var(--color-fog); color: var(--color-graphite); cursor: pointer; appearance: none;">
+                <option>🌐 English</option>
+                <option>Tamil</option>
+                <option>Kannada</option>
+                <option>Hindi</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Column 2: Partner with Us -->
+        <div class="footer__col">
+          <h4 style="font-size: 15px; color: var(--color-graphite); margin-bottom: 16px; font-weight: 700;">Partner with Us</h4>
+          <ul style="display: flex; flex-direction: column; gap: 12px; list-style: none;">
+            <li><a href="index.html#partners" style="font-size: 14px; opacity: 0.75;">Register as a Restaurant</a></li>
+            <li><a href="index.html#riders" style="font-size: 14px; opacity: 0.75;">Become a Virundhu Rider</a></li>
+            <li><a href="explore.html" style="font-size: 14px; opacity: 0.75;">Order online</a></li>
+          </ul>
+        </div>
+
+        <!-- Column 3: Mumbai Address -->
+        <div class="footer__col">
+          <h4 style="font-size: 15px; color: var(--color-graphite); margin-bottom: 16px; font-weight: 700;">Mumbai</h4>
+          <p style="font-size: 13px; opacity: 0.75; line-height: 1.6;">
+            Mittal Court, Office no. 132, 13th Floor, (C Wing) at 224, Nariman Point, Maharashtra, Mumbai - 400021
+          </p>
+        </div>
+
+        <!-- Column 4: Bangalore Address & Help -->
+        <div class="footer__col">
+          <h4 style="font-size: 15px; color: var(--color-graphite); margin-bottom: 16px; font-weight: 700;">Bangalore</h4>
+          <p style="font-size: 13px; opacity: 0.75; line-height: 1.6; margin-bottom: 24px;">
+            Down-Town Park II, Plot 22, Adjacent Prestige Tech Cloud, Bengaluru
+          </p>
+          <div style="display: flex; align-items: center; gap: 10px; margin-top: 16px;">
+            <i class="fa-solid fa-phone" style="color: var(--color-ember-orange); font-size: 20px;"></i>
+            <div>
+              <strong style="display: block; font-size: 12px; opacity: 0.85;">For help & support</strong>
+              <a href="tel:080-69188101" style="font-size: 13px; font-weight: 700;">080-69188101</a>
+              <a href="mailto:customer@virundhu.com" style="display: block; font-size: 12px; opacity: 0.75;">customer@virundhu.com</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Column 5: Kolkata Address -->
+        <div class="footer__col">
+          <h4 style="font-size: 15px; color: var(--color-graphite); margin-bottom: 16px; font-weight: 700;">Kolkata</h4>
+          <p style="font-size: 13px; opacity: 0.75; line-height: 1.6;">
+            Gintaa Tower, Mohisgote, New Town Opposite DLF 1, Gate No.5, West Bengal-700102, India
+          </p>
+        </div>
+
+        <!-- Column 6: Connect with Us -->
+        <div class="footer__col">
+          <h4 style="font-size: 15px; color: var(--color-graphite); margin-bottom: 16px; font-weight: 700;">Connect with Us</h4>
+          <div style="display: flex; gap: 8px; margin-bottom: 16px;">
+            <a href="#" style="width: 32px; height: 32px; background-color: #3b5998; color: white; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 14px;"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="#" style="width: 32px; height: 32px; background-color: #000000; color: white; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 14px;"><i class="fa-brands fa-x-twitter"></i></a>
+            <a href="#" style="width: 32px; height: 32px; background-color: #0077b5; color: white; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 14px;"><i class="fa-brands fa-linkedin-in"></i></a>
+            <a href="#" style="width: 32px; height: 32px; background-color: #e1306c; color: white; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 14px;"><i class="fa-brands fa-instagram"></i></a>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            <a href="index.html#how-it-works" class="btn" style="background-color: #ffeae1; color: var(--color-ember-orange); font-size: 12px; padding: 6px 12px; font-weight: 700; border-radius: var(--radius-pill); justify-content: center;">Get Virundhu app</a>
+            <a href="index.html#riders" class="btn" style="background-color: #ffeae1; color: var(--color-ember-orange); font-size: 12px; padding: 6px 12px; font-weight: 700; border-radius: var(--radius-pill); justify-content: center;">Get Rider app</a>
+            <a href="index.html#partners" class="btn" style="background-color: #ffeae1; color: var(--color-ember-orange); font-size: 12px; padding: 6px 12px; font-weight: 700; border-radius: var(--radius-pill); justify-content: center;">Get Restaurant app</a>
+          </div>
+        </div>
+      </div>
+
+      <div style="border-top: 1px solid var(--color-fog); padding-top: 24px; padding-bottom: 24px; font-size: 12px; opacity: 0.6; display: flex; justify-content: center; align-items: center;">
+        <p>© 2026 Virundhu. All rights reserved. Powered by Asconsoftech</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ================= PAYMENT SUCCESS MODAL ================= -->
+  <div class="modal" id="payment-success-modal">
+    <div class="modal__content text-center" style="max-width: 480px; padding: 40px 32px;">
+      <i class="fa-solid fa-circle-check" style="font-size: 64px; color: var(--color-ember-orange); margin-bottom: 20px;"></i>
+      <h2 style="font-size: 26px; margin-bottom: 12px;">Order Placed!</h2>
+      <p style="opacity: 0.8; font-size: 15px; margin-bottom: 24px;">Your order has been successfully placed. Prepare your appetite!</p>
+      
+      <!-- Live tracking trace mock -->
+      <div class="booking-card" style="background-color: var(--color-fog); padding: 16px; margin-bottom: 24px; border-radius: 20px;">
+        <div style="font-weight: 700; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; color: var(--color-ember-orange); margin-bottom: 12px;">Live Transit Status</div>
+        <div style="font-size: 14px; font-weight: 700; margin-bottom: 8px;">Arriving in 25 minutes</div>
+        
+        <!-- Animated progress bar -->
+        <div style="width: 100%; height: 6px; background-color: rgba(0,0,0,0.05); border-radius: 3px; position: relative; overflow: hidden; margin-top: 12px;">
+          <div style="position: absolute; left: 0; top: 0; height: 100%; width: 45%; background-color: var(--color-ember-orange); border-radius: 3px; animation: transitMove 2s ease-in-out infinite;"></div>
+        </div>
+      </div>
+
+      <button class="btn btn--header-action btn--block" onclick="window.location.href='index.html'" style="border-radius: 12px; font-weight: 700;">
+        Back to Home
+      </button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="app.js"></script>
+  <script>
+    // Toggle active background colors on payment mode click
+    function togglePaymentSelect(radio) {
+      document.querySelectorAll('.payment-option-label').forEach(lbl => {
+        lbl.classList.remove('selected');
+      });
+      radio.closest('.payment-option-label').classList.add('selected');
+    }
+
+    // Load checkout items
+    document.addEventListener("DOMContentLoaded", () => {
+      loadCheckoutSummary();
+    });
+
+    function loadCheckoutSummary() {
+      const cart = JSON.parse(localStorage.getItem('virundhu_cart')) || [];
+      const listContainer = document.getElementById('checkout-items-list');
+      
+      if (!listContainer) return;
+      listContainer.innerHTML = '';
+      
+      if (cart.length === 0) {
+        listContainer.innerHTML = '<div style="opacity: 0.6; padding: 20px 0;">No items in cart.</div>';
+        document.getElementById('checkout-subtotal').innerText = '₹0';
+        document.getElementById('checkout-total').innerText = '₹0';
+        return;
+      }
+      
+      let subtotal = 0;
+      cart.forEach(item => {
+        const qty = Number(item.qty || item.quantity || 1);
+        const price = Number(item.price || 0);
+        const itemTotal = price * qty;
+        subtotal += itemTotal;
+        
+        const row = document.createElement('div');
+        row.className = 'checkout-item-row';
+        row.innerHTML = `
+          <div>
+            <strong>${item.name || 'Food Item'}</strong> <span style="opacity:0.6;">x ${qty}</span>
+            <div style="font-size: 11px; opacity: 0.7;">${item.hotel || 'Restaurant'}</div>
+          </div>
+          <span style="font-weight: 700;">₹${itemTotal}</span>
+        `;
+        listContainer.appendChild(row);
+      });
+      
+      const delivery = 35;
+      const total = subtotal + delivery;
+      
+      document.getElementById('checkout-subtotal').innerText = `₹${subtotal}`;
+      document.getElementById('checkout-total').innerText = `₹${total}`;
+    }
+
+    function handlePaymentConfirm() {
+      const fullName = document.getElementById('checkout-fullname').value;
+      const phone = document.getElementById('checkout-phone').value;
+      const address = document.getElementById('checkout-address').value;
+      const city = document.getElementById('checkout-city').value;
+      const pincode = document.getElementById('checkout-pincode').value;
+
+      if (!fullName || !phone || !address || !city || !pincode) {
+        showToast("Please fill in all delivery fields!");
+        return;
+      }
+
+      // Enforce Clerk Google Login
+      const Clerk = window.Clerk;
+      const isLoggedIn = (Clerk && Clerk.user) ? Clerk.user.primaryEmailAddress.emailAddress : localStorage.getItem('virundhu_user');
+      
+      if (!isLoggedIn) {
+        showToast("Clerk Google Login is required before placing your order!");
+        if (Clerk && Clerk.signIn) {
+          Clerk.signIn.authenticateWithRedirect({
+            strategy: 'oauth_google',
+            redirectUrl: new URL('sso-callback.html', window.location.href).href,
+            redirectUrlComplete: new URL('checkout.html', window.location.href).href
+          }).catch(err => {
+            console.error('Clerk redirect error:', err);
+            const loginModal = document.getElementById('login-modal');
+            if (loginModal) loginModal.classList.add('open');
+          });
+        } else {
+          const loginModal = document.getElementById('login-modal');
+          if (loginModal) loginModal.classList.add('open');
+        }
+        return;
+      }
+
+      // Show payment success modal
+      document.getElementById('payment-success-modal').classList.add('open');
+      
+      // Clear cart
+      localStorage.setItem('virundhu_cart', JSON.stringify([]));
+      if (window.updateCartBadge) {
+        window.updateCartBadge();
+      }
+    }
+  </style>
+</body>
+</html>
