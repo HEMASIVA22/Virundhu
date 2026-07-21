@@ -2,7 +2,7 @@
 
 > Browse restaurants, explore menus, add items to your cart, sign in with Google, and place your order seamlessly. 🛵
 
-🔗 **Live Demo:** {{LIVE_URL}} • **Code:** {{REPO_URL}}
+🔗 **Live Demo:** https://github.com/HEMASIVA22/Virundhu • **Code:** https://hemasiva22.github.io/Virundhu/
 
 ---
 
