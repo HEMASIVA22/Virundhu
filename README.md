@@ -75,13 +75,7 @@ AI tools (Lovable & Anti Gravity) were used for UI ideas, component planning, de
 - Authentication Flow
 - Git & GitHub
 
----
-
-## 🎓 About TAP Academy
-
-Built as part of my Frontend Training at **TAP Academy**, Bangalore.
-
----
+--
 
 ## ⭐ Support
 
